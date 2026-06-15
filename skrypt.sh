@@ -1,44 +1,24 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-SCRIPT_NAME="$(basename "$0")"
+SCRIPT_NAME="skrypt.sh"
 
-show_date() {
+if [ "$1" = "--date" ]; then
   date +"%Y-%m-%d"
-}
+  exit 0
+fi
 
-create_logs() {
-  for i in $(seq 1 100); do
+if [ "$1" = "--logs" ]; then
+  count="${2:-100}"
+
+  for ((i=1; i<=count; i++)); do
     file="log${i}.txt"
-
     echo "Nazwa pliku: $file" > "$file"
     echo "Utworzony przez: $SCRIPT_NAME" >> "$file"
     echo "Data: $(date +"%Y-%m-%d %H:%M:%S")" >> "$file"
   done
 
-  echo "Utworzono 100 plików log."
-}
+  echo "Utworzono $count plików log."
+  exit 0
+fi
 
-show_help() {
-  echo "Dostępne opcje:"
-  echo "  --date    wyświetla dzisiejszą datę"
-  echo "  --logs    tworzy 100 plików log"
-  echo "  --help    wyświetla pomoc"
-}
-
-case "$1" in
-  --date)
-    show_date
-    ;;
-
-  --logs)
-    create_logs
-    ;;
-
-  --help)
-    show_help
-    ;;
-
-  *)
-    echo "Nieznana opcja. Użyj --help"
-    ;;
-esac
+echo "Dostępne opcje: --date, --logs"
